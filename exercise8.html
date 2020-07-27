@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Get Textarea Text</title>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript">
+		
+		    $(document).ready(function(){
+
+        $("button").click(function(){
+
+            var comment = $.trim($("#comment").val());
+
+            if(comment != ""){
+
+                alert(comment);
+
+            }
+
+        });        
+
+    });
+	</script>
+</head>
+<body>
+	 <textarea id="comment" rows="5" cols="50"></textarea>
+
+    <p><button type="button">Get Value</button></p>
+
+    <p><strong>Note:</strong> Type something in the textarea and click the button to see the result.</p>
+</body>
+</html>

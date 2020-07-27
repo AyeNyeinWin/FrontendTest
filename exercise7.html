@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Calendar</title>
+	<script type="text/javascript">
+	setCal()
+
+function getTime() {
+  
+  var now = new Date()
+  var hour = now.getHours()
+  var minute = now.getMinutes()
+  now = null
+  var ampm = ""
+
+  if (hour >= 12) {
+    hour -= 12
+    ampm = "PM"
+  } else
+    ampm = "AM"
+  hour = (hour == 0) ? 12 : hour
+
+  if (minute < 10)
+    minute = "0" + minute 
+
+  return hour + ":" + minute + " " + ampm
+}
+
+function leapYear(year) {
+  if (year % 4 == 0) 
+    return true 
+    
+  return false 
+}
+
+function getDays(month, year) {
+  
+  var ar = new Array(12)
+  ar[0] = 31 
+  ar[1] = (leapYear(year)) ? 29 : 28 
+  ar[2] = 31 
+  ar[3] = 30 
+  ar[4] = 31 
+  ar[5] = 30 
+  ar[6] = 31 
+  ar[7] = 31 
+  ar[8] = 30 
+  ar[9] = 31 
+  ar[10] = 30 
+  ar[11] = 31 
+
+  return ar[month]
+}
+
+function getMonthName(month) {
+  
+  var ar = new Array(12)
+  ar[0] = "January"
+  ar[1] = "February"
+  ar[2] = "March"
+  ar[3] = "April"
+  ar[4] = "May"
+  ar[5] = "June"
+  ar[6] = "July"
+  ar[7] = "August"
+  ar[8] = "September"
+  ar[9] = "October"
+  ar[10] = "November"
+  ar[11] = "December"
+
+  
+  return ar[month]
+}
+
+function setCal() {
+  
+  var now = new Date()
+  var year = now.getYear()
+  if (year < 1000)
+    year += 1900
+  var month = now.getMonth()
+  var monthName = getMonthName(month)
+  var date = now.getDate()
+  now = null
+
+  
+  var firstDayInstance = new Date(year, month, 1)
+  var firstDay = firstDayInstance.getDay()
+  firstDayInstance = null
+
+  var days = getDays(month, year)
+
+  drawCal(firstDay + 1, days, date, monthName, year)
+}
+
+function drawCal(firstDay, lastDate, date, monthName, year) {
+  
+  var headerHeight = 50 
+  var border = 2 
+  var cellspacing = 4 
+  var headerColor = "midnightblue" 
+  var headerSize = "+3" 
+  var colWidth = 60 
+  var dayCellHeight = 25 
+  var dayColor = "darkblue" 
+  var cellHeight = 40 
+  var todayColor = "red" 
+  var timeColor = "purple" 
+
+  var text = "" 
+  text += '<center>'
+  text += '<table border=' + border + ' cellspacing=' + cellspacing + '>' 
+  text += '<th colspan=7 height=' + headerHeight + '>' 
+  text += '<font color="' + headerColor + '" size=' + headerSize + '>' 
+  text += monthName + ' ' + year
+  text += '</font>' 
+
+  
+  var openCol = '<td width=' + colWidth + ' height=' + dayCellHeight + '>'
+  openCol += '<font color="' + dayColor + '">'
+  var closeCol = '</font></td>'
+
+  
+  var weekDay = new Array(7)
+  weekDay[0] = "Sun"
+  weekDay[1] = "Mon"
+  weekDay[2] = "Tues"
+  weekDay[3] = "Wed"
+  weekDay[4] = "Thu"
+  weekDay[5] = "Fri"
+  weekDay[6] = "Sat"
+
+  
+  text += '<tr align="center" valing="center">'
+  for (var dayNum = 0; dayNum < 7; ++dayNum) {
+    text += openCol + weekDay[dayNum] + closeCol
+  }
+  text += '</tr>'
+
+  
+  var digit = 1
+  var curCell = 1
+
+  for (var row = 1; row <= Math.ceil((lastDate + firstDay - 1) / 7); ++row) {
+    text += '<tr align="right" valing="top">'
+    for (var col = 1; col <= 7; ++col) {
+      if (digit > lastDate)
+        break
+      if (curCell < firstDay) {
+        text += '<td></td>';
+        curCell++
+      } else {
+        if (digit == date) { 
+          text += '<td height=' + cellHeight + '>'
+          text += '<font color="' + todayColor + '">'
+          text += digit
+          text += '</font><br>'
+          text += '<font color="' + timeColor + '" size=2>'
+          text += '<center>' + getTime() + '</center>'
+          text += '</font>'
+          text += '</td>'
+        } else
+          text += '<td height=' + cellHeight + '>' + digit + '</td>'
+        digit++
+      }
+    }
+    text += '</tr>'
+  }
+
+  text += '</table>'
+  text += '</center>'
+
+  document.write(text)
+}
+</script>
+
+
+</head>
+<body>
+
+</body>
+</html>
